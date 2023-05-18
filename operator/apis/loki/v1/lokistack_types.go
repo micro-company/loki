@@ -269,6 +269,14 @@ type LokiComponentSpec struct {
 	// +optional
 	// +kubebuilder:validation:Optional
 	Tolerations []corev1.Toleration `json:"tolerations,omitempty"`
+
+	// PodAntiAffinity defines the pod anti affinity scheduling rules to schedule pods
+	// of a component.
+	//
+	// +optional
+	// +kubebuilder:validation:Optional
+	// +operator-sdk:csv:customresourcedefinitions:type=spec,xDescriptors="urn:alm:descriptor:com.tectonic.ui:podAntiAffinity",displayName="PodAntiAffinity"
+	PodAntiAffinity *corev1.PodAntiAffinity `json:"podAntiAffinity,omitempty"`
 }
 
 // LokiTemplateSpec defines the template of all requirements to configure
@@ -821,6 +829,7 @@ type ReplicationSpec struct {
 	Factor int32 `json:"factor,omitempty"`
 
 	// Zones defines an array of ZoneSpec that the scheduler will try to satisfy.
+	// IMPORTANT: Make sure that the replication factor defined is less than or equal to the number of available zones.
 	//
 	// +optional
 	// +kubebuilder:validation:Optional
